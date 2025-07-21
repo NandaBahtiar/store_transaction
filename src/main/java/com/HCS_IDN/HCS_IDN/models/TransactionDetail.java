@@ -19,6 +19,7 @@ public class TransactionDetail {
 
     @ManyToOne
     @JoinColumn(name = "transaction_id")
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Transaction transaction;
 
     @ManyToOne
