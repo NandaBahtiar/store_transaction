@@ -5,6 +5,7 @@ import com.HCS_IDN.HCS_IDN.dtos.UserDto;
 import com.HCS_IDN.HCS_IDN.dtos.UserUpdateDto;
 import com.HCS_IDN.HCS_IDN.models.User;
 import com.HCS_IDN.HCS_IDN.repositories.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserDto> getAllUsers() {
@@ -30,6 +33,7 @@ public class UserService {
         User user = new User();
         user.setUsername(userCreateDto.getUsername());
         user.setEmail(userCreateDto.getEmail());
+        user.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
         user.setRole(userCreateDto.getRole());
         return toDto(userRepository.save(user));
     }
@@ -41,6 +45,9 @@ public class UserService {
         }
         if (userUpdateDto.getEmail() != null) {
             user.setEmail(userUpdateDto.getEmail());
+        }
+        if (userUpdateDto.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userUpdateDto.getPassword()));
         }
         if (userUpdateDto.getRole() != null) {
             user.setRole(userUpdateDto.getRole());

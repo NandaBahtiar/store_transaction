@@ -56,7 +56,7 @@ public class ReportServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        staffUser = new User(1L, "staff", "staff@example.com", User.Role.STAFF, LocalDateTime.now(), LocalDateTime.now());
+        staffUser = new User(1L, "staff", "staff@example.com", "password123", User.Role.STAFF, LocalDateTime.now(), LocalDateTime.now());
         customer = new Customer(1L, "John Doe", LocalDate.of(1990, 5, 15), "New York", staffUser, staffUser, LocalDateTime.now(), LocalDateTime.now());
         product1 = new Product(1L, "Laptop", BigDecimal.valueOf(1000.00), LocalDateTime.now(), LocalDateTime.now(), new HashSet<>());
         product2 = new Product(2L, "Mouse", BigDecimal.valueOf(25.00), LocalDateTime.now(), LocalDateTime.now(), new HashSet<>());

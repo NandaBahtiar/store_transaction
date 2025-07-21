@@ -46,7 +46,7 @@ public class CustomerServiceTest {
 
     @Test
     void getAllCustomers() {
-        User user = new User(1L, "testuser", "test@example.com", User.Role.ADMIN, LocalDateTime.now(), LocalDateTime.now());
+        User user = new User(1L, "testuser", "test@example.com", "password123", User.Role.ADMIN, LocalDateTime.now(), LocalDateTime.now());
         Customer customer1 = new Customer(1L, "John Doe", LocalDate.of(1990, 5, 15), "New York", user, user, LocalDateTime.now(), LocalDateTime.now());
         Customer customer2 = new Customer(2L, "Jane Smith", LocalDate.of(1988, 11, 22), "Los Angeles", user, user, LocalDateTime.now(), LocalDateTime.now());
         Pageable pageable = PageRequest.of(0, 10);
@@ -63,7 +63,7 @@ public class CustomerServiceTest {
 
     @Test
     void getCustomerById() {
-        User user = new User(1L, "testuser", "test@example.com", User.Role.ADMIN, LocalDateTime.now(), LocalDateTime.now());
+        User user = new User(1L, "testuser", "test@example.com", "password123", User.Role.ADMIN, LocalDateTime.now(), LocalDateTime.now());
         Customer customer = new Customer(1L, "John Doe", LocalDate.of(1990, 5, 15), "New York", user, user, LocalDateTime.now(), LocalDateTime.now());
         when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
 
@@ -82,7 +82,7 @@ public class CustomerServiceTest {
 
     @Test
     void createCustomer() {
-        User user = new User(1L, "testuser", "test@example.com", User.Role.ADMIN, LocalDateTime.now(), LocalDateTime.now());
+        User user = new User(1L, "testuser", "test@example.com", "password123", User.Role.ADMIN, LocalDateTime.now(), LocalDateTime.now());
         CustomerCreateDto createDto = new CustomerCreateDto();
         createDto.setName("New Customer");
         createDto.setBirthdate(LocalDate.of(2000, 1, 1));
@@ -103,7 +103,7 @@ public class CustomerServiceTest {
 
     @Test
     void updateCustomer() {
-        User user = new User(1L, "testuser", "test@example.com", User.Role.ADMIN, LocalDateTime.now(), LocalDateTime.now());
+        User user = new User(1L, "testuser", "test@example.com", "password123", User.Role.ADMIN, LocalDateTime.now(), LocalDateTime.now());
         Customer existingCustomer = new Customer(1L, "Old Name", LocalDate.of(1990, 1, 1), "Old Place", user, user, LocalDateTime.now(), LocalDateTime.now());
         CustomerUpdateDto updateDto = new CustomerUpdateDto();
         updateDto.setName("Updated Name");
@@ -131,7 +131,7 @@ public class CustomerServiceTest {
 
     @Test
     void searchCustomers() {
-        User user = new User(1L, "testuser", "test@example.com", User.Role.ADMIN, LocalDateTime.now(), LocalDateTime.now());
+        User user = new User(1L, "testuser", "test@example.com", "password123", User.Role.ADMIN, LocalDateTime.now(), LocalDateTime.now());
         Customer customer1 = new Customer(1L, "John Doe", LocalDate.of(1990, 5, 15), "New York", user, user, LocalDateTime.now(), LocalDateTime.now());
         Pageable pageable = PageRequest.of(0, 10);
         Page<Customer> customerPage = new PageImpl<>(Arrays.asList(customer1), pageable, 1);

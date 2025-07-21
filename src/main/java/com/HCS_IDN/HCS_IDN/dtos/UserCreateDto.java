@@ -15,6 +15,9 @@ public class UserCreateDto {
     @Email
     private String email;
 
+    @NotBlank
+    private String password;
+
     @NotNull
     private User.Role role;
 }

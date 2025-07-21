@@ -11,5 +11,7 @@ public class UserUpdateDto {
     @Email
     private String email;
 
+    private String password;
+
     private User.Role role;
 }

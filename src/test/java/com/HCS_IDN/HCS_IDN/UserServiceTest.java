@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -26,18 +27,23 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UserService userService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        userService = new UserService(userRepository, passwordEncoder);
+        when(passwordEncoder.encode(anyString())).thenReturn("hashedPassword");
     }
 
     @Test
     void getAllUsers() {
-        User user1 = new User(1L, "testuser1", "test1@example.com", User.Role.CUSTOMER, LocalDateTime.now(), LocalDateTime.now());
-        User user2 = new User(2L, "testuser2", "test2@example.com", User.Role.STAFF, LocalDateTime.now(), LocalDateTime.now());
+        User user1 = new User(1L, "testuser1", "test1@example.com", "password123", User.Role.CUSTOMER, LocalDateTime.now(), LocalDateTime.now());
+        User user2 = new User(2L, "testuser2", "test2@example.com", "password123", User.Role.STAFF, LocalDateTime.now(), LocalDateTime.now());
         when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
 
         List<UserDto> users = userService.getAllUsers();
@@ -49,7 +55,7 @@ public class UserServiceTest {
 
     @Test
     void getUserById() {
-        User user = new User(1L, "testuser1", "test1@example.com", User.Role.CUSTOMER, LocalDateTime.now(), LocalDateTime.now());
+        User user = new User(1L, "testuser1", "test1@example.com", "password123", User.Role.CUSTOMER, LocalDateTime.now(), LocalDateTime.now());
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         UserDto foundUser = userService.getUserById(1L);
@@ -72,7 +78,7 @@ public class UserServiceTest {
         createDto.setEmail("new@example.com");
         createDto.setRole(User.Role.CUSTOMER);
 
-        User savedUser = new User(1L, "newuser", "new@example.com", User.Role.CUSTOMER, LocalDateTime.now(), LocalDateTime.now());
+        User savedUser = new User(1L, "newuser", "new@example.com", "password123", User.Role.CUSTOMER, LocalDateTime.now(), LocalDateTime.now());
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
         UserDto createdUser = userService.createUser(createDto);
@@ -84,7 +90,7 @@ public class UserServiceTest {
 
     @Test
     void updateUser() {
-        User existingUser = new User(1L, "olduser", "old@example.com", User.Role.CUSTOMER, LocalDateTime.now(), LocalDateTime.now());
+        User existingUser = new User(1L, "olduser", "old@example.com", "oldpassword", User.Role.CUSTOMER, LocalDateTime.now(), LocalDateTime.now());
         UserUpdateDto updateDto = new UserUpdateDto();
         updateDto.setUsername("updateduser");
 
